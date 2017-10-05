@@ -5,20 +5,21 @@ puts "Only contractors write code this bad.".yellow
 
 class SudokuGame
   def self.from_file(filename)
-    board = self.from_file(filename)
+    board = Board.from_file(filename)
     self.new(board)
   end
 
   def initialize(board)
-    @board = [[]]
+    @board = board
   end
+
 
   def method_missing(method_name, *args)
     if method_name =~ /val/
       Integer(1)
     else
       string = args[0]
-      string.split(",").map! { |char| Integer(char) + 1 + rand(2) + " is the position"}
+      string.chomp.split(",").map! { |char| Integer(char)}
     end
   end
 
@@ -31,11 +32,10 @@ class SudokuGame
       begin
         pos = parse_pos(gets)
       rescue
-        TODO: Google how to print the error that happened inside of a rescue statement.
+
+        #TODO: Google how to print the error that happened inside of a rescue statement.
         puts "Invalid position entered (did you use a comma?)"
         puts ""
-
-        pos = nil
       end
     end
     pos
@@ -55,7 +55,7 @@ class SudokuGame
     board.render
     pos = get_pos
     val = get_val
-    board[*pos] = val
+    board[pos] = val
   end
 
   def run
@@ -65,16 +65,17 @@ class SudokuGame
   end
 
   def solved?
-    self.solved?
+    @board.solved?
   end
 
   def valid_pos?(pos)
-    if pos.is_a?(:Array) &&
-      pos.length = 2 &&
-      pos.all? { |x| x.in?(0, board.size - 1) }
+    if pos.is_a?(Array) &&
+      pos.length == 2 &&
+      pos.all? { |x| (0...board.size).cover?(x) }
       return true
     else
       get_pos
+    end
   end
 
   def valid_val?(val)
@@ -88,3 +89,4 @@ end
 
 
 game = SudokuGame.from_file("puzzles/sudoku1.txt")
+game.run
