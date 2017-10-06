@@ -31,7 +31,8 @@ class Tile
         new_x = x + i
         new_y = y + j
         next if !(0..8).cover?(new_x) || !(0..8).cover?(new_y)
-        neighbors << board([new_x, new_y])
+        pos = new_x, new_y
+        neighbors << board[pos]
       end
     end
     neighbors
@@ -41,7 +42,7 @@ class Tile
     return "F " if is_flagged
     #return " " if neighbor_bomb_count == 0
     return "* " if is_bomb && is_revealed
-    return neighbor_bomb_count.to_s if is_revealed
+    return "#{neighbor_bomb_count} " if is_revealed
     "  "
     #return "*"
   end
