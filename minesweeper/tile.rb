@@ -11,7 +11,7 @@ class Tile
   end
 
   def reveal
-    @is_revealed = true unless is_revealed || is_flagged
+    @is_revealed = true unless is_revealed
   end
 
   def toggle_flag
